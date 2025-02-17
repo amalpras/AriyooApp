@@ -1,0 +1,22 @@
+<div *ngIf="activeSessions && activeSessions.length; else noSessions">
+  <div class="container">
+    <div class="sessions-panel">
+      <h2>Sessions</h2>
+      <ul>
+        <li *ngFor="let session of activeSessions" 
+            (click)="selectSession(session.sessionId)"
+            [ngClass]="{'selected': selectedSessionId === session.sessionId}">
+          Session ID: {{ session.sessionId }}
+        </li>
+      </ul>
+    </div>
+    <div class="chat-panel">
+      <!-- Pass the selected session ID to the chat window component -->
+      <app-chatwindow [sessionId]="selectedSessionId"></app-chatwindow>
+    </div>
+  </div>
+</div>
+<ng-template #noSessions>
+  <p>No active sessions available.</p>
+</ng-template>
+

@@ -1,0 +1,19 @@
+<div class="chat-container">
+  <div #chatMessages class="chat-messages">
+    <!-- Chat messages will be displayed here -->
+    <div *ngFor="let message of messages"
+         [ngClass]="{'message-right': !isCurrentUser(message.senderId), 'message-left': isCurrentUser(message.senderId)}"
+         class="chat-message">
+      <p>{{ message.messageText }}</p>
+      <span class="message-time">{{ formatMessageTime(message.createdAt) }}</span>
+    </div>
+  </div>
+
+  <div class="chat-input-bar">
+    <input type="text"
+           [(ngModel)]="message"
+           placeholder="Type a message"
+           (keyup.enter)="sendMessage()">
+    <button [disabled]="!message.trim()" (click)="sendMessage()">Send</button>
+  </div>
+</div>
