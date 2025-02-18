@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessagesService } from '../../core/http/messages.service';
+import { MessagesService } from 'src/core/http/messages.service';
+import { TagsService } from 'src/core/http/tags.service';
+import { Tag, sendSessionMessage } from '../models/tag.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-chat',
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.css']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy {
   activeSessions: any[] = [];
   selectedSessionId: number = 0; // new property for the selected session ID
   private intervalId: any;

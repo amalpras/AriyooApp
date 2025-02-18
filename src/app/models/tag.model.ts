@@ -16,3 +16,11 @@ export interface PostMessageRequest {
     sessionId: number;
     createdAt: Date;  
   }
+
+  export interface RegisterUser {
+    email: string;
+    password: string;
+    flname: string;
+    isSeeker: boolean;
+    isSolver: boolean;
+}
