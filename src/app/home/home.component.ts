@@ -74,4 +74,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   selectSession(sessionId: number): void {
     this.selectedSessionId = sessionId;
   }
+
+  // pull request test
 }
