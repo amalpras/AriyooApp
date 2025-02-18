@@ -1,6 +1,6 @@
 export interface Tag {
   id: number;
-  tagName: string | null;
+  tagName: string;
   description: string | null;
 }
 
