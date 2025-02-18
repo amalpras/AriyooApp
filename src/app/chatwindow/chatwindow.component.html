@@ -2,7 +2,7 @@
   <div #chatMessages class="chat-messages">
     <!-- Chat messages will be displayed here -->
     <div *ngFor="let message of messages"
-         [ngClass]="{'message-right': !isCurrentUser(message.senderId), 'message-left': isCurrentUser(message.senderId)}"
+         [ngClass]="{'message-left': !isCurrentUser(message.senderId), 'message-right': isCurrentUser(message.senderId)}"
          class="chat-message">
       <p>{{ message.messageText }}</p>
       <span class="message-time">{{ formatMessageTime(message.createdAt) }}</span>
