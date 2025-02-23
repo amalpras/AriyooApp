@@ -1,16 +1,17 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { TagsService } from 'src/core/http/tags.service';
 import { AskQuery, Place, Session, Tag } from 'src/app/models/tag.model';
 import { Router } from '@angular/router';
 import { MessagesService } from 'src/core/http/messages.service';
 import { SessionService } from 'src/app/services/session.service';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('messageInput') messageInput!: ElementRef;
   
   tags: Tag[] = [];
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
   isNavbarVisible: boolean = true;
   allSessions: Session[] = [];
   userMode: string = 'seeker';
+  intervalId: any;
 
   constructor(
     private tagsService: TagsService, 
@@ -40,6 +42,16 @@ export class HomeComponent implements OnInit {
       this.userMode = mode;
       this.getAllSessions();
     });
+    this.intervalId = setInterval(() => {
+      this.getAllSessions();
+    }, 5000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+   
   }
 
   private getAllTags(): void {
