@@ -12,11 +12,19 @@ export class NavbarComponent implements OnInit {
   @Output() toggleNavbar = new EventEmitter<void>();
   @Input() allSessions: Session[] = [];
   isGuruMode: boolean = true;
+  userName: string = '';
 
   constructor(
     private router: Router,
     private sessionService: SessionService
-  ) { }
+  ) {
+    const loggedInUser = localStorage.getItem('loggedin_user');
+    if (!loggedInUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.userName = JSON.parse(loggedInUser).fullName;
+   }
   ngOnInit(): void {
     this.sessionService.userMode$.subscribe(mode => { this.isGuruMode = mode === 'guru'; });    
   }

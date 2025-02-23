@@ -18,13 +18,21 @@ export class ChatComponent implements OnInit, OnDestroy {
   private sessionSubscription!: Subscription;
   isGuruMode: boolean = false;
   userMode: string = 'seeker';
+  userNames: string = '';
 
   constructor(
     private messagesService: MessagesService,
     private router: Router,
     private route: ActivatedRoute,
     private sessionService: SessionService
-  ) {}
+  ) {
+    const loggedInUser = localStorage.getItem('loggedin_user');
+    if (!loggedInUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.userNames = JSON.parse(loggedInUser).fullName;
+  }
 
   ngOnInit(): void {
     const loggedInUser = localStorage.getItem('loggedin_user');
