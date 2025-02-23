@@ -29,5 +29,10 @@ export class NavbarComponent {
 
   toggleMode(): void {
     this.isGuruMode = !this.isGuruMode;
+    if (this.isGuruMode) {
+      this.sessionService.setUserMode('guru');
+    } else {
+      this.sessionService.setUserMode('seeker');
+    }
   }
 }

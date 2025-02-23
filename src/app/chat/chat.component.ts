@@ -16,6 +16,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   selectedSessionId: number = 0; // new property for the selected session ID
   private intervalId: any;
   private sessionSubscription!: Subscription;
+  isGuruMode: boolean = false;
+  userMode: string = 'seeker';
 
   constructor(
     private messagesService: MessagesService,
@@ -37,10 +39,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     );
     
-    // We'll refresh active sessions every 5 seconds.
-    this.getActiveSessions();
+    this.sessionService.userMode$.subscribe(mode => {
+      this.userMode = mode;
+      this.getAllSessions();
+    });
+    
     this.intervalId = setInterval(() => {
-      this.getActiveSessions();
+      this.getAllSessions();
     }, 5000);
 
     
@@ -50,42 +55,50 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+    if (this.sessionSubscription) {
+      this.sessionSubscription.unsubscribe();
+    }
   }
 
-  getActiveSessions() {
+  getAllSessions() {
     const loggedInUser = localStorage.getItem('loggedin_user');
     if (!loggedInUser) {
       this.router.navigate(['/login']);
       return;
     }
     const user = JSON.parse(loggedInUser);
-    if(user.isSeeker){
-        this.messagesService.getActiveSessionsSeeker(user.userId).subscribe(
-          (data: any[]) => {
-            this.activeSessions = data;
-            
-          },
-          (error) => {
-            console.error('Error fetching active sessions for seeker:', error);
-          }
-        );
+    if(this.userMode === 'seeker'){
+        this.getAllSessionsSeeker(user.userId);
     } else {
-        this.messagesService.getActiveSessionsSolver(user.userId).subscribe(
-          (data: any[]) => {
-            this.activeSessions = data;
-            if(this.activeSessions.length > 0 && !this.selectedSessionId) {
-              this.selectedSessionId = this.activeSessions[0].sessionId;
-            }
-          },
-          (error) => {
-            console.error('Error fetching active sessions for solver:', error);
-          }
-        );
+        this.getAllSessionsSolver(user.userId);
     }
   }
 
+  getAllSessionsSeeker(seekerId: number) {  
+    this.messagesService.getAllSessionsSeeker(seekerId.toString()).subscribe(
+      (data: any[]) => {
+        this.activeSessions = data;
+      },
+      (error) => {
+        console.error('Error fetching active sessions for seeker:', error);
+      }
+    );
+  } 
+
+  getAllSessionsSolver(solverId: number) {
+    this.messagesService.getAllSessionsSolver(solverId.toString()).subscribe(
+      (data: any[]) => {
+        this.activeSessions = data;
+      },
+      (error) => {
+        console.error('Error fetching active sessions for solver:', error);
+      }
+    );
+  }
+
   selectSession(sessionId: number): void {
-    this.selectedSessionId = sessionId;
+    this.sessionService.setSelectedSessionId(sessionId);
+    this.router.navigate(['/chat']);
   }
 
   // Add trackBy function
@@ -93,5 +106,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     return session.sessionId;
   }
 
-  // pull request test
+  toggleMode(): void {
+    this.isGuruMode = !this.isGuruMode;
+    if (this.isGuruMode) {
+      this.sessionService.setUserMode('guru');
+    } else {
+      this.sessionService.setUserMode('seeker');
+    }
+  }
+
 }

@@ -32,11 +32,11 @@ export class MessagesService {
     return this.http.get(`${this.baseUrl}/api/Message/activesessionsolver/${solverId}`);
   }
   getAllSessionsSeeker(seekerId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/Message/getallsessionseeker/${seekerId}`);
+    return this.http.get(`${this.baseUrl}/api/Message/getallsessionsseeker/${seekerId}`);
   }
 
   getAllSessionsSolver(solverId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/Message/getallsessionsolver/${solverId}`);
+    return this.http.get(`${this.baseUrl}/api/Message/getallsessionssolver/${solverId}`);
   }
   getMessagesBySessionId(sessionId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/Message/getMessagesBySessionId/${sessionId}`);

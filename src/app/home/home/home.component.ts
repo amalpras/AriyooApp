@@ -3,6 +3,7 @@ import { TagsService } from 'src/core/http/tags.service';
 import { AskQuery, Place, Session, Tag } from 'src/app/models/tag.model';
 import { Router } from '@angular/router';
 import { MessagesService } from 'src/core/http/messages.service';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-home',
@@ -23,13 +24,22 @@ export class HomeComponent implements OnInit {
   currentTagInput: string = '';
   isNavbarVisible: boolean = true;
   allSessions: Session[] = [];
+  userMode: string = 'seeker';
 
-  constructor(private tagsService: TagsService, private router: Router, private messageService: MessagesService) {}
+  constructor(
+    private tagsService: TagsService, 
+    private router: Router, 
+    private messageService: MessagesService,
+    private sessionService: SessionService
+  ) {}
 
   ngOnInit(): void {
     this.getAllTags();
     this.getAllPlaces();
-    this.getAllSessions();
+    this.sessionService.userMode$.subscribe(mode => {
+      this.userMode = mode;
+      this.getAllSessions();
+    });
   }
 
   private getAllTags(): void {
@@ -60,25 +70,33 @@ export class HomeComponent implements OnInit {
       return;
     }
     const user = JSON.parse(loggedInUser);
-    if(user.isSeeker){
-        this.messageService.getActiveSessionsSeeker(user.userId).subscribe(
-          (data: any[]) => {
-            this.allSessions = data;
-          },
-          (error) => {
-            console.error('Error fetching active sessions for seeker:', error);
-          }
-        );
+    if(this.userMode === 'seeker'){
+        this.getAllSessionsSeeker(user.userId);
     } else {
-        this.messageService.getActiveSessionsSolver(user.userId).subscribe(
-          (data: any[]) => {
-            this.allSessions = data;
-          },
-          (error) => {
-            console.error('Error fetching active sessions for solver:', error);
-          }
-        );
+        this.getAllSessionsSolver(user.userId);
     }
+  }
+
+  getAllSessionsSeeker(seekerId: number) {  
+    this.messageService.getAllSessionsSeeker(seekerId.toString()).subscribe(
+      (data: any[]) => {
+        this.allSessions = data;
+      },
+      (error) => {
+        console.error('Error fetching active sessions for seeker:', error);
+      }
+    );
+  } 
+
+  getAllSessionsSolver(solverId: number) {
+    this.messageService.getAllSessionsSolver(solverId.toString()).subscribe(
+      (data: any[]) => {
+        this.allSessions = data;
+      },
+      (error) => {
+        console.error('Error fetching active sessions for solver:', error);
+      }
+    );
   }
 
   onMessageInput(event: any): void {
