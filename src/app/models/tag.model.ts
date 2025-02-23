@@ -4,7 +4,7 @@ export interface Tag {
   description: string | null;
 }
 
-export interface PostMessageRequest {
+export interface AskQuery {
     seekerId: number; 
     message: string;
     tag: Tag[];
@@ -23,4 +23,9 @@ export interface PostMessageRequest {
     flname: string;
     isSeeker: boolean;
     isSolver: boolean;
-}
+  }
+
+  export interface Place {
+    id: number;
+    placeName: string;
+  }

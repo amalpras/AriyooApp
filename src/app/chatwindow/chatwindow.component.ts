@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, OnChanges, AfterViewChecked, ElementRef, 
 import { Router } from '@angular/router';
 import { MessagesService } from 'src/core/http/messages.service';
 import { TagsService } from 'src/core/http/tags.service';
-import { Tag, PostMessageRequest, sendSessionMessage } from '../models/tag.model';
+import { Tag, AskQuery, sendSessionMessage } from '../models/tag.model';
 
 @Component({
   selector: 'app-chatwindow',

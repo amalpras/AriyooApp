@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PostMessageRequest, sendSessionMessage, Tag } from 'src/app/models/tag.model';
+import { AskQuery, sendSessionMessage, Tag } from 'src/app/models/tag.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class MessagesService {
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(data: PostMessageRequest): Observable<any> {
+  sendMessage(data: AskQuery): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/Message/postQuestion`, data);
   }
 

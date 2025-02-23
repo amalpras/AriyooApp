@@ -18,6 +18,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ChatwindowComponent } from './chatwindow/chatwindow.component';
 import { RegisterComponent } from './register/register.component';
 import { ChatComponent } from './chat/chat.component';
+import { ProfileComponent } from './profile/profile.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { ChatComponent } from './chat/chat.component';
     ChatwindowComponent,
     RegisterComponent,
     ChatComponent,
+    ProfileComponent,
+    
   ],
   imports: [
     BrowserModule,

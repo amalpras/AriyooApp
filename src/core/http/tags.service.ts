@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tag } from 'src/app/models/tag.model';
+import { Place, Tag } from 'src/app/models/tag.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,5 +15,8 @@ export class TagsService {
   // Method to get the list of tags
   getTags(): Observable<Tag[]> {
     return this.http.get<Tag[]>(`${this.baseUrl}/api/Tags/getAll`);
+  }
+  getPlaces(): Observable<Place[]> {
+    return this.http.get<Place[]>(`${this.baseUrl}/api/Tags/place`);
   }
 }

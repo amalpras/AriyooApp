@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TagsService } from 'src/core/http/tags.service';
-import { Tag } from 'src/app/models/tag.model';
+import { AskQuery, Place, Tag } from 'src/app/models/tag.model';
+import { Router } from '@angular/router';
+import { MessagesService } from 'src/core/http/messages.service';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +13,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('messageInput') messageInput!: ElementRef;
   
   tags: Tag[] = [];
+  places: Place[] = []; 
   message: string = '';
   showTagSuggestions: boolean = false;
   filteredTags: Tag[] = [];
@@ -18,11 +21,13 @@ export class HomeComponent implements OnInit {
   cursorPosition: number = 0;
   isTypingTag: boolean = false;
   currentTagInput: string = '';
+  isNavbarVisible: boolean = false;
 
-  constructor(private tagsService: TagsService) {}
+  constructor(private tagsService: TagsService, private router: Router, private messageService: MessagesService) {}
 
   ngOnInit(): void {
     this.getAllTags();
+    this.getAllPlaces();
   }
 
   private getAllTags(): void {
@@ -35,6 +40,16 @@ export class HomeComponent implements OnInit {
         console.error('Error loading tags:', error);
       }
     });
+  }
+
+  private getAllPlaces(): void {
+    this.tagsService.getPlaces().subscribe({
+      next: (places) => {
+        this.places = places;},
+      error: (error) => {
+        console.error('Error loading places:', error);
+      }
+    })
   }
 
   onMessageInput(event: any): void {
@@ -61,8 +76,21 @@ export class HomeComponent implements OnInit {
     this.filteredTags = this.tags.filter((tag:Tag) => {
       return tag.tagName.toLowerCase().includes(query.toLowerCase())}
     );
+    let filteredPlaces = this.places.filter((place:Place) => { 
+      return place.placeName.toLowerCase().includes(query.toLowerCase())}
+    );
+
+    this.filteredTags.forEach((element:Tag) => {
+      element.description = 'tag';
+    });
+
+    filteredPlaces.forEach((place:Place) => {
+      let tag: Tag = { id: place.id, tagName: place.placeName, description: 'place' }; 
+      this.filteredTags.push(tag);
+    });
     this.showTagSuggestions = this.filteredTags.length > 0;
   }
+  
 
   selectTag(tag: Tag): void {
     // Get the text before and after cursor
@@ -93,4 +121,23 @@ export class HomeComponent implements OnInit {
   removeTag(tagToRemove: Tag): void {
     this.selectedTags = this.selectedTags.filter(tag => tag.tagName !== tagToRemove.tagName);
   }
+
+  askQuery(): void {
+    const loggedInUser = localStorage.getItem('loggedin_user');
+    if (!loggedInUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    const askQuery: AskQuery = {
+      seekerId: JSON.parse(loggedInUser).userId,
+      message: this.message,
+      tag: this.selectedTags
+    }
+    this.messageService.sendMessage(askQuery).subscribe({next:(res:any) => {console.log(res);this.router.navigate(['/chat']);}, error: (err:any) => {alert("error");}});  
+  }
+
+  toggleNavbar(): void {
+    this.isNavbarVisible = !this.isNavbarVisible;
+  }
+
 }
