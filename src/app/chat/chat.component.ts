@@ -47,8 +47,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => {
       this.getAllSessions();
     }, 5000);
-
-    
   }
 
   ngOnDestroy(): void {
@@ -114,5 +112,4 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.sessionService.setUserMode('seeker');
     }
   }
-
 }
