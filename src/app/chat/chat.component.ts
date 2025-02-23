@@ -1,8 +1,10 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessagesService } from 'src/core/http/messages.service';
 import { TagsService } from 'src/core/http/tags.service';
 import { Tag, sendSessionMessage } from '../models/tag.model';
+import { SessionService } from '../services/session.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -13,10 +15,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   activeSessions: any[] = [];
   selectedSessionId: number = 0; // new property for the selected session ID
   private intervalId: any;
+  private sessionSubscription!: Subscription;
 
   constructor(
     private messagesService: MessagesService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private sessionService: SessionService
   ) {}
 
   ngOnInit(): void {
@@ -25,11 +30,20 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
       return;
     }
+
+    this.sessionSubscription = this.sessionService.selectedSessionId$.subscribe(
+      sessionId => {
+        this.selectedSessionId = sessionId;
+      }
+    );
+    
     // We'll refresh active sessions every 5 seconds.
     this.getActiveSessions();
     this.intervalId = setInterval(() => {
       this.getActiveSessions();
     }, 5000);
+
+    
   }
 
   ngOnDestroy(): void {
@@ -49,10 +63,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.messagesService.getActiveSessionsSeeker(user.userId).subscribe(
           (data: any[]) => {
             this.activeSessions = data;
-            // Select the first session by default if none is selected yet.
-            if(this.activeSessions.length > 0 && !this.selectedSessionId) {
-              this.selectedSessionId = this.activeSessions[0].sessionId;
-            }
+            
           },
           (error) => {
             console.error('Error fetching active sessions for seeker:', error);

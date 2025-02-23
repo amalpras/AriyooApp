@@ -9,15 +9,7 @@ export class AppComponent implements OnInit {
   title = 'YourFriend';
 
   ngOnInit() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition.bind(this), this.handleError.bind(this),{
-        enableHighAccuracy: true, // Request high accuracy
-        timeout: 10000, // Max wait time in milliseconds
-        maximumAge: 0, // Do not use cached location
-      });
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-    }
+    
   }
 
   showPosition(position: GeolocationPosition) {

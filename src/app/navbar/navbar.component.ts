@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Session } from '../models/tag.model';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,9 +12,17 @@ export class NavbarComponent {
   @Output() toggleNavbar = new EventEmitter<void>();
   @Input() allSessions: Session[] = [];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private sessionService: SessionService
+  ) { }
 
   onToggleNavbar(): void {
     this.toggleNavbar.emit();
+  }
+
+  selectSession(sessionId: number): void { 
+    this.sessionService.setSelectedSessionId(sessionId);
+    this.router.navigate(['/chat']);
   }
 }
