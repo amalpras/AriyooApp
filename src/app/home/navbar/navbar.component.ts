@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Session } from '../models/tag.model';
-import { SessionService } from '../services/session.service';
+import { Session } from '../../models/tag.model';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,6 +11,7 @@ import { SessionService } from '../services/session.service';
 export class NavbarComponent {
   @Output() toggleNavbar = new EventEmitter<void>();
   @Input() allSessions: Session[] = [];
+  isGuruMode: boolean = true;
 
   constructor(
     private router: Router,
@@ -21,8 +22,12 @@ export class NavbarComponent {
     this.toggleNavbar.emit();
   }
 
-  selectSession(sessionId: number): void { 
+  selectSession(sessionId: number): void {
     this.sessionService.setSelectedSessionId(sessionId);
     this.router.navigate(['/chat']);
+  }
+
+  toggleMode(): void {
+    this.isGuruMode = !this.isGuruMode;
   }
 }

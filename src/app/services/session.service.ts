@@ -11,4 +11,10 @@ export class SessionService {
   setSelectedSessionId(sessionId: number) {
     this.selectedSessionIdSource.next(sessionId);
   }
+
+  private userMode = new BehaviorSubject<string>('guru');
+  userMode$ = this.userMode.asObservable();
+  setUserMode(mode: string) {
+    this.userMode.next(mode);
+  }
 }
