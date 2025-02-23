@@ -36,7 +36,6 @@ export class HomeComponent implements OnInit {
     this.tagsService.getTags().subscribe({
       next: (tags) => {
         this.tags = tags;
-        console.log('Tags loaded:', tags);
       },
       error: (error) => {
         console.error('Error loading tags:', error);

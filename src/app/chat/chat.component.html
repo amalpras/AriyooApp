@@ -1,31 +1,46 @@
-<div *ngIf="activeSessions && activeSessions.length; else noSessions" class="h-screen w-screen">
+<div *ngIf="activeSessions && activeSessions.length; else noSessions" class="flex min-h-screen bg-gray-100">
+  <!-- Main Content -->
+  <div class="flex-1">
     <div class="flex h-full">
       <!-- Sessions Panel -->
-      <div class="w-1/4 bg-gray-300 border-r border-gray-200 p-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Sessions</h2>
-        <ul class="space-y-2">
-          <li *ngFor="let session of activeSessions" 
-              (click)="selectSession(session.sessionId)"
-              [ngClass]="{'bg-blue-500 text-white': selectedSessionId === session.sessionId, 
-                         'bg-white hover:bg-gray-50': selectedSessionId !== session.sessionId}"
-              class="p-3 rounded-lg shadow cursor-pointer transition-colors duration-200 ease-in-out">
-            Session ID: {{ session.sessionId }}
-          </li>
-        </ul>
+      <div class="w-64 bg-white shadow-lg border-r border-gray-200">
+        <div class="p-4 border-b">
+          <h2 class="text-xl font-semibold text-gray-800">Active Sessions</h2>
+        </div>
+        <div class="overflow-y-auto h-[calc(100vh-5rem)]">
+          <ul class="p-2 space-y-2">
+            <li *ngFor="let session of activeSessions; trackBy: trackBySessionId" 
+                (click)="selectSession(session.sessionId)"
+                class="p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition-all"
+                [class.bg-blue-50]="selectedSessionId === session.sessionId">
+              <div class="flex items-center space-x-3">
+                <div class="w-2 h-2 rounded-full" 
+                     [ngClass]="{'bg-green-500': session.active, 'bg-gray-400': !session.active}">
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800">{{ session.title }}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-  
+
       <!-- Chat Panel -->
-      <div class="w-3/4 bg-white">
+      <div class="flex-1 bg-gray-50">
         <app-chatwindow [sessionId]="selectedSessionId"></app-chatwindow>
       </div>
     </div>
   </div>
-  
-  <!-- No Sessions Template -->
-  <ng-template #noSessions>
-    <div class="h-screen w-screen flex items-center justify-center bg-gray-50">
-      <p class="text-gray-500 text-lg">No active sessions available.</p>
+</div>
+
+<!-- No Sessions Template -->
+<ng-template #noSessions>
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div class="text-center">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-2">No Active Sessions</h2>
+      <p class="text-gray-500">Start a new conversation to begin chatting.</p>
     </div>
-  </ng-template>
-  
-  
+  </div>
+</ng-template>
+

@@ -88,5 +88,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.selectedSessionId = sessionId;
   }
 
+  // Add trackBy function
+  trackBySessionId(index: number, session: any): number {
+    return session.sessionId;
+  }
+
   // pull request test
 }
