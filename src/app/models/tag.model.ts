@@ -29,3 +29,12 @@ export interface AskQuery {
     id: number;
     placeName: string;
   }
+
+  export interface Session {  
+    sessionId: number;
+    seekerId: number;
+    solverId: number;
+    title: string;
+    createdAt: Date;
+    active: boolean;
+  }

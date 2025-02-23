@@ -19,8 +19,12 @@
     </svg>
   </button>
 
-  <!-- Navbar -->
-  <app-navbar *ngIf="isNavbarVisible"></app-navbar>
+  <!-- Navbar with sessions passed as input -->
+  <app-navbar 
+    *ngIf="isNavbarVisible" 
+    [allSessions]="allSessions"
+    (toggleNavbar)="toggleNavbar()">
+  </app-navbar>
   
   <!-- Main Content -->
   <div [class.ml-64]="isNavbarVisible" class="flex-1">

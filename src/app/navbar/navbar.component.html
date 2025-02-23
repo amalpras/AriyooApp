@@ -1,21 +1,38 @@
 <div class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 flex flex-col">
   <!-- Header -->
-  <div class="p-4 border-b">
+  <div class="p-4 border-b flex justify-between items-center">
     <h2 class="text-xl font-semibold text-gray-800">Sessions</h2>
+    <button 
+      (click)="onToggleNavbar()"
+      class="p-2 bg-blue-600 text-white rounded-full shadow-lg focus:outline-none"
+    >
+      <svg 
+      class="w-6 h-6" 
+      fill="none" 
+      stroke="currentColor" 
+      viewBox="0 0 24 24"
+    >
+      <path 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        stroke-width="2" 
+        d="M4 6h16M4 12h16m-7 6h7"
+      />
+    </svg>
+    </button>
   </div>
 
   <!-- Sessions List with Scroll -->
   <div class="flex-1 overflow-y-auto">
     <ul class="p-2 space-y-2">
-      <li *ngFor="let session of sessions" 
+      <li *ngFor="let session of allSessions" 
           class="p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition-all">
         <div class="flex items-center space-x-3">
           <div class="w-2 h-2 rounded-full" 
-               [ngClass]="{'bg-green-500': session.isActive, 'bg-gray-400': !session.isActive}">
+               [ngClass]="{'bg-green-500': session.active, 'bg-gray-400': !session.active}">
           </div>
           <div>
-            <p class="font-medium text-gray-800">{{session.name}}</p>
-            <p class="text-sm text-gray-500">{{session.lastMessage}}</p>
+            <p class="font-medium text-gray-800">{{session.title}}</p>
           </div>
         </div>
       </li>

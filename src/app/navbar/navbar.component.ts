@@ -1,30 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-
-interface Session {
-  id: string;
-  name: string;
-  lastMessage: string;
-  isActive: boolean;
-}
+import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Session } from '../models/tag.model';
 
 @Component({
   selector: 'app-navbar',
-  templateUrl: './navbar.component.html'
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
-  sessions: Session[] = [
-    {
-      id: '1',
-      name: 'Travel Guide - Kerala',
-      lastMessage: 'What are the best places to visit?',
-      isActive: true
-    },
-    // Add more sessions as needed
-  ];
+export class NavbarComponent {
+  @Output() toggleNavbar = new EventEmitter<void>();
+  @Input() allSessions: Session[] = [];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {
-    // Fetch sessions from your service here
+  onToggleNavbar(): void {
+    this.toggleNavbar.emit();
   }
 }

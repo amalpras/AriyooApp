@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TagsService } from 'src/core/http/tags.service';
-import { AskQuery, Place, Tag } from 'src/app/models/tag.model';
+import { AskQuery, Place, Session, Tag } from 'src/app/models/tag.model';
 import { Router } from '@angular/router';
 import { MessagesService } from 'src/core/http/messages.service';
 
@@ -21,13 +21,15 @@ export class HomeComponent implements OnInit {
   cursorPosition: number = 0;
   isTypingTag: boolean = false;
   currentTagInput: string = '';
-  isNavbarVisible: boolean = false;
+  isNavbarVisible: boolean = true;
+  allSessions: Session[] = [];
 
   constructor(private tagsService: TagsService, private router: Router, private messageService: MessagesService) {}
 
   ngOnInit(): void {
     this.getAllTags();
     this.getAllPlaces();
+    this.getAllSessions();
   }
 
   private getAllTags(): void {
@@ -50,6 +52,34 @@ export class HomeComponent implements OnInit {
         console.error('Error loading places:', error);
       }
     })
+  }
+
+  getAllSessions() {
+    const loggedInUser = localStorage.getItem('loggedin_user');
+    if (!loggedInUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    const user = JSON.parse(loggedInUser);
+    if(user.isSeeker){
+        this.messageService.getActiveSessionsSeeker(user.userId).subscribe(
+          (data: any[]) => {
+            this.allSessions = data;
+          },
+          (error) => {
+            console.error('Error fetching active sessions for seeker:', error);
+          }
+        );
+    } else {
+        this.messageService.getActiveSessionsSolver(user.userId).subscribe(
+          (data: any[]) => {
+            this.allSessions = data;
+          },
+          (error) => {
+            console.error('Error fetching active sessions for solver:', error);
+          }
+        );
+    }
   }
 
   onMessageInput(event: any): void {
