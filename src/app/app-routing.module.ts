@@ -6,12 +6,14 @@ import { RegisterComponent } from './register/register.component';
 import { HomeModule } from './home/home.module';
 import { ChatComponent } from './chat/chat.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NewsletterComponent } from './newsletter/newsletter.component';
 
 const routes: Routes = [
   { path: 'chat', component : ChatComponent},
   {path: 'login', component: LoginComponent},
   {path : 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
+  {path: '', component: NewsletterComponent},
   { 
     path: '', 
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)

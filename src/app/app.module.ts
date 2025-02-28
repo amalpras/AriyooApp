@@ -19,6 +19,7 @@ import { ChatwindowComponent } from './chatwindow/chatwindow.component';
 import { RegisterComponent } from './register/register.component';
 import { ChatComponent } from './chat/chat.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NewsletterComponent } from './newsletter/newsletter.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ProfileComponent } from './profile/profile.component';
     RegisterComponent,
     ChatComponent,
     ProfileComponent,
+    NewsletterComponent,
     
   ],
   imports: [
