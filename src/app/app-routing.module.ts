@@ -15,7 +15,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: '', component: NewsletterComponent},
   { 
-    path: '', 
+    path: 'home', 
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
   { path: '**', redirectTo: '' },

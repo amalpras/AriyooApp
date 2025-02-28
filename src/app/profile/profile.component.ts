@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -6,22 +7,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+
   user: any;
-  guru: any = null;
-  isGuru: boolean = false;
+
+  constructor(private readonly router:Router) { } 
 
   ngOnInit() {
     const userData = localStorage.getItem('loggedin_user');
+    if (!userData) {
+      this.router.navigate(['/login']);
+    }
+
     if (userData) {
       const parsedData = JSON.parse(userData);
-      this.isGuru = !parsedData.isSeeker;
-      // Load user data from your service
-      this.loadUserData(parsedData.userId);
+      this.loadUserData(parsedData);
     }
   }
 
-  private loadUserData(userId: string) {
-    // Implement your user data loading logic here
-    // This should make an API call to get the user's profile data
+  private loadUserData(userr: any) {
+    this.user = userr;
   }
 }
