@@ -7,16 +7,24 @@ import { NewsletterService } from 'src/core/http/newsletter.service';
   styleUrls: ['./newsletter.component.css']
 })
 export class NewsletterComponent {
-  constructor(private readonly newsletterService:NewsletterService){};
+  isLoading = false;
+  showSuccess = false;
+
+  constructor(private readonly newsletterService: NewsletterService) {}
 
   addNewsletter(email: string) {
+    if (!email) return;
+    
+    this.isLoading = true;
     this.newsletterService.addNewsletter(email).subscribe({
       next: (response) => {
-        alert('You have been subscribed to our newsletter');
+        this.isLoading = false;
+        this.showSuccess = true;
+        setTimeout(() => this.showSuccess = false, 3000);
       },
       error: (error) => {
-        alert('There was an error subscribing to our newsletter');  
+        this.isLoading = false;
+        alert('There was an error subscribing to our newsletter');
     }});
   }
-
 }
