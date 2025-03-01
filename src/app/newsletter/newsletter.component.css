@@ -12,3 +12,18 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.text-gradient {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+a svg {
+    transition: transform 0.2s ease-in-out;
+}
+
+a:hover svg {
+    transform: scale(1.1);
+}
