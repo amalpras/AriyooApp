@@ -20,6 +20,7 @@ import { RegisterComponent } from './register/register.component';
 import { ChatComponent } from './chat/chat.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { NewsletterComponent } from './newsletter/newsletter.component';
     ReactiveFormsModule,
     MatOptionModule,
     MatChipsModule,
-  ],
+    SharedModule
+],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]
 })
