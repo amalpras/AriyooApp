@@ -9,6 +9,7 @@ import { NewsletterService } from 'src/core/http/newsletter.service';
 export class NewsletterComponent {
   isLoading = false;
   showSuccess = false;
+  showFailure = false;
 
   constructor(private readonly newsletterService: NewsletterService) {}
 
@@ -24,7 +25,8 @@ export class NewsletterComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        alert('There was an error subscribing to our newsletter');
+        this.showFailure = true;
+        setTimeout(() => this.showFailure = false, 3000);
     }});
   }
 }

@@ -21,6 +21,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { SharedModule } from "./shared/shared.module";
+import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SharedModule } from "./shared/shared.module";
     ChatComponent,
     ProfileComponent,
     NewsletterComponent,
+    ForgotPasswordComponent,
     
   ],
   imports: [

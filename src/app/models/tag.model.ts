@@ -38,3 +38,57 @@ export interface AskQuery {
     createdAt: Date;
     active: boolean;
   }
+
+  export interface User {
+    id: number;
+    flname: string;
+    email: string;
+    password: string;
+    isSeeker?: boolean;
+    isSolver?: boolean;
+    createdAt: Date;
+    userName: string;
+    Phone?:string;
+    PhoneVerified: boolean;
+    seekerRating: number;
+    questionsAsked: number;
+    solverRating: number;
+    questionsAnswered: number;
+  }
+
+  export interface UpdatePassword {
+    userId: number;
+    oldPassword: string;
+    newPassword: string;
+  }
+
+  export interface PlaceTag {
+    placeTagId: number;
+    placeTagName: string;
+}
+
+
+export interface UserPlaceTag {
+  userPlaceTagId: number;
+  userId: number;
+  placeId: number;
+  placeTagId: number;
+  place?: Place;
+  placeTag?: PlaceTag;
+}
+
+export interface UserPlace {
+  userPlaceId: number;
+  userId: number;
+  placeId: number;
+  place?: Place;
+}
+export interface UserTag {
+  userId: number;
+  user?: User;  
+  tagId: number;
+  tag?: Tag;
+}
+
+
+  
