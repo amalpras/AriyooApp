@@ -22,11 +22,12 @@ import { ProfileComponent } from './profile/profile.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { SharedModule } from "./shared/shared.module";
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
+import { UserService } from './services/user.service';
+import { TagsService } from './services/tags.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-
     LoginComponent,
     ChatwindowComponent,
     RegisterComponent,
@@ -34,7 +35,6 @@ import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.compone
     ProfileComponent,
     NewsletterComponent,
     ForgotPasswordComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -52,8 +52,12 @@ import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.compone
     MatOptionModule,
     MatChipsModule,
     SharedModule
-],
-  providers: [HttpClientModule],
+  ],
+  providers: [
+    HttpClientModule,
+    UserService,
+    TagsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

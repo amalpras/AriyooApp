@@ -1,8 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/core/http/user.service';
-import { TagsService } from 'src/core/http/tags.service';
+import { UserService } from '../services/user.service';
+import { TagsService } from '../services/tags.service';
 import { UserTag, UserPlace, UserPlaceTag } from '../models/tag.model';
+
+interface User {
+  id: number;
+  userName: string;
+  email: string;
+  isSolver: boolean;
+  seekerRating: number;
+  solverRating: number;
+  questionsAsked: number;
+  questionsAnswered: number;
+}
 
 @Component({
   selector: 'app-profile',
@@ -10,122 +21,121 @@ import { UserTag, UserPlace, UserPlaceTag } from '../models/tag.model';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
-  user: any = {
+  user: User = {
+    id: 0,
+    userName: '',
+    email: '',
     isSolver: false,
     seekerRating: 0,
     solverRating: 0,
     questionsAsked: 0,
     questionsAnswered: 0
   };
+  
   isEditingUsername = false;
   editedUsername = '';
   userTags: UserTag[] = [];
   userPlaces: UserPlace[] = [];
   userPlaceTags: UserPlaceTag[] = [];
+  showAddTagModal = false;
+  showAddPlaceModal = false;
+  showAddPlaceTagModal = false;
 
   constructor(
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly tagsService: TagsService
-  ) { } 
+  ) { }
 
   ngOnInit() {
     const userData = localStorage.getItem('loggedin_user');
     if (!userData) {
       this.router.navigate(['/login']);
+      return;
     }
 
+    // Load user data from localStorage for demo
     if (userData) {
-      const parsedData = JSON.parse(userData);
-      this.loadUserData(parsedData);
+      const parsedUser = JSON.parse(userData);
+      this.user = {
+        ...this.user,
+        ...parsedUser,
+        // Mock data for demonstration
+        seekerRating: 4.5,
+        solverRating: 4.8,
+        questionsAsked: 15,
+        questionsAnswered: 25
+      };
+      this.editedUsername = this.user.userName;
     }
+
+    // Mock data for demonstration
+    this.userTags = [
+      { tagId: 1, userId: this.user.id, tagName: 'travel' },
+      { tagId: 2, userId: this.user.id, tagName: 'food' },
+      { tagId: 3, userId: this.user.id, tagName: 'adventure' }
+    ];
+
+    this.userPlaces = [
+      { placeId: 1, userId: this.user.id, placeName: 'Kerala' },
+      { placeId: 2, userId: this.user.id, placeName: 'Goa' },
+      { placeId: 3, userId: this.user.id, placeName: 'Mumbai' }
+    ];
+
+    this.userPlaceTags = [
+      { placeTagId: 1, userId: this.user.id, tagName: 'beaches' },
+      { placeTagId: 2, userId: this.user.id, tagName: 'mountains' },
+      { placeTagId: 3, userId: this.user.id, tagName: 'cities' }
+    ];
   }
 
-  private loadUserData(userr: any) {
-    this.user = userr;
-    const userId = this.user.id;
-    
-    this.tagsService.getUserTags(userId).subscribe({
-      next: (tags) => this.userTags = tags,
-      error: (error) => console.error('Error loading user tags:', error)
-    });
-
-    this.tagsService.getUserPlaces(userId).subscribe({
-      next: (places) => this.userPlaces = places,
-      error: (error) => console.error('Error loading user places:', error)
-    });
-
-    this.tagsService.getUserPlaceTags(userId).subscribe({
-      next: (placeTags) => this.userPlaceTags = placeTags,
-      error: (error) => console.error('Error loading user place tags:', error)
-    });
-  }
-
-  toggleUsernameEdit() {
-    this.isEditingUsername = !this.isEditingUsername;
+  toggleUsernameEdit(): void {
     if (this.isEditingUsername) {
-      this.editedUsername = this.user.userName || '';
+      this.updateUsername();
+    }
+    this.isEditingUsername = !this.isEditingUsername;
+  }
+
+  updateUsername(): void {
+    if (this.editedUsername.trim()) {
+      this.user.userName = this.editedUsername.trim();
+      // Update localStorage for demo
+      const userData = JSON.parse(localStorage.getItem('loggedin_user') || '{}');
+      userData.userName = this.user.userName;
+      localStorage.setItem('loggedin_user', JSON.stringify(userData));
+      this.isEditingUsername = false;
     }
   }
 
-  updateUsername() {
-    if (!this.editedUsername) return;
-    
-    const updatedUser = { ...this.user, userName: this.editedUsername };
-    this.userService.updateUser(updatedUser).subscribe({
-      next: (response) => {
-        this.user = response;
-        localStorage.setItem('loggedin_user', JSON.stringify(response));
-        this.isEditingUsername = false;
-      },
-      error: (error) => {
-        console.error('Error updating username:', error);
-      }
-    });
+  toggleGuruMode(): void {
+    this.user.isSolver = !this.user.isSolver;
+    // Update localStorage for demo
+    const userData = JSON.parse(localStorage.getItem('loggedin_user') || '{}');
+    userData.isSolver = this.user.isSolver;
+    localStorage.setItem('loggedin_user', JSON.stringify(userData));
   }
 
-  toggleGuruMode() {
-    const updatedUser = { ...this.user, isSolver: !this.user.isSolver };
-    this.userService.updateUser(updatedUser).subscribe({
-      next: (response) => {
-        this.user = response;
-        localStorage.setItem('loggedin_user', JSON.stringify(response));
-      },
-      error: (error) => {
-        console.error('Error updating guru mode:', error);
-      }
-    });
+  openAddTagModal(): void {
+    this.showAddTagModal = true;
   }
 
-  openAddTagModal() {
-    // Implement modal logic for adding tags
+  openAddPlaceModal(): void {
+    this.showAddPlaceModal = true;
   }
 
-  openAddPlaceModal() {
-    // Implement modal logic for adding places
+  openAddPlaceTagModal(): void {
+    this.showAddPlaceTagModal = true;
   }
 
-  openAddPlaceTagModal() {
-    // Implement modal logic for adding place tags
+  deleteUserTag(tag: UserTag): void {
+    this.userTags = this.userTags.filter(t => t.tagId !== tag.tagId);
   }
 
-  deleteUserTag(tag: UserTag) {
-    this.tagsService.deleteUserTag(tag.userId, tag.tagId).subscribe({
-      next: (response) => {
-        this.userTags = this.userTags.filter(t => t.tagId !== tag.tagId);
-      },
-      error: (error) => {        
-        console.error('Error deleting user tag:', error);
-      } 
-    });
+  deleteUserPlace(place: UserPlace): void {
+    this.userPlaces = this.userPlaces.filter(p => p.placeId !== place.placeId);
   }
 
-  deleteUserPlace(place: UserPlace) {
-    // Implement delete logic
-  }
-
-  deleteUserPlaceTag(placeTag: UserPlaceTag) {
-    // Implement delete logic
+  deleteUserPlaceTag(placeTag: UserPlaceTag): void {
+    this.userPlaceTags = this.userPlaceTags.filter(pt => pt.placeTagId !== placeTag.placeTagId);
   }
 }
