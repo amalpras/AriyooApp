@@ -69,28 +69,22 @@ lastMessage: any;
     placeTagName: string;
 }
 
-
-export interface UserPlaceTag {
-  userPlaceTagId: number;
-  userId: number;
-  placeId: number;
-  placeTagId: number;
-  place?: Place;
-  placeTag?: PlaceTag;
+export interface UserTag {
+  tagId: number;
+  userId: number;  // Added missing userId property
+  tagName: string;
 }
 
 export interface UserPlace {
-  userPlaceId: number;
-  userId: number;
   placeId: number;
-  place?: Place;
-}
-export interface UserTag {
   userId: number;
-  user?: User;  
-  tagId: number;
-  tag?: Tag;
+  placeName: string;
+}
+
+export interface UserPlaceTag {
+  placeTagId: number;
+  userId: number;
+  tagName: string;
 }
 
 
-  

@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   cursorPosition: number = 0;
   isTypingTag: boolean = false;
   currentTagInput: string = '';
-  isNavbarVisible: boolean = true;
+  isNavbarVisible: boolean = false;
   allSessions: Session[] = [];
   userMode: string = 'seeker';
   intervalId: any;

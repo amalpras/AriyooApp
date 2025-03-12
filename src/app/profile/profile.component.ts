@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/core/http/user.service';
 import { TagsService } from 'src/core/http/tags.service';
-import { UserTag, UserPlace, UserPlaceTag } from 'src/app/models/tag.model';
+import { UserTag, UserPlace, UserPlaceTag } from '../models/tag.model';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +11,13 @@ import { UserTag, UserPlace, UserPlaceTag } from 'src/app/models/tag.model';
 })
 export class ProfileComponent implements OnInit {
 
-  user: any;
+  user: any = {
+    isSolver: false,
+    seekerRating: 0,
+    solverRating: 0,
+    questionsAsked: 0,
+    questionsAnswered: 0
+  };
   isEditingUsername = false;
   editedUsername = '';
   userTags: UserTag[] = [];

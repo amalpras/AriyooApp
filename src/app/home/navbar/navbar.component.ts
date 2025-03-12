@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Session } from '../../models/tag.model';
+import { Session } from '../../models/session.model';
 import { SessionService } from '../../services/session.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { SessionService } from '../../services/session.service';
 export class NavbarComponent implements OnInit {
   @Output() toggleNavbar = new EventEmitter<void>();
   @Input() allSessions: Session[] = [];
+  @Input() isNavbarVisible: boolean = false;
   isGuruMode: boolean = true;
   userName: string = '';
 
@@ -29,8 +30,6 @@ export class NavbarComponent implements OnInit {
     this.sessionService.userMode$.subscribe(mode => { this.isGuruMode = mode === 'guru'; });    
   }
 
-  
-
   onToggleNavbar(): void {
     this.toggleNavbar.emit();
   }
@@ -47,5 +46,9 @@ export class NavbarComponent implements OnInit {
     } else {
       this.sessionService.setUserMode('seeker');
     }
+  }
+
+  toggle() {
+    this.toggleNavbar.emit();
   }
 }
