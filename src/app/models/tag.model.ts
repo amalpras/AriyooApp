@@ -30,7 +30,9 @@ export interface AskQuery {
     placeName: string;
   }
 
-  export interface Session {  
+  export interface Session {
+name: any;
+lastMessage: any;  
     sessionId: number;
     seekerId: number;
     solverId: number;

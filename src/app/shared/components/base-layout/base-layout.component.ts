@@ -3,11 +3,11 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-base-layout',
   template: `
-    <div class="page-container">
+    <div class="relative isolate overflow-auto bg-gray-900 w-screen min-h-screen">
       <ng-content></ng-content>
       
       <!-- Background effects -->
-      <div class="floating-background">
+      <div class="fixed inset-0 -z-10">
         <svg viewBox="0 0 1024 1024" class="absolute left-0 top-0 -z-10 h-[100vh] w-[100vw] opacity-30"
             aria-hidden="true">
             <circle cx="512" cy="212" r="412" fill="url(#gradient1)" fill-opacity="0.4">
@@ -21,6 +21,7 @@ import { Component, Input } from '@angular/core';
                 </radialGradient>
             </defs>
         </svg>
+        <div class="absolute inset-0 bg-gradient-radial from-transparent via-gray-900/30 to-gray-900/90"></div>
       </div>
     </div>
   `
