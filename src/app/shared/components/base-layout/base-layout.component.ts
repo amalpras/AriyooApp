@@ -1,29 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-base-layout',
-  template: `
-    <div class="relative isolate overflow-auto bg-gray-900 w-screen min-h-screen">
-      <ng-content></ng-content>
-      
-      <!-- Background effects -->
-      <div class="fixed inset-0 -z-10">
-        <svg viewBox="0 0 1024 1024" class="absolute left-0 top-0 -z-10 h-[100vh] w-[100vw] opacity-30"
-            aria-hidden="true">
-            <circle cx="512" cy="212" r="412" fill="url(#gradient1)" fill-opacity="0.4">
-                <animate attributeName="cy" values="212;612;212" dur="20s" repeatCount="indefinite" />
-            </circle>
-            <defs>
-                <radialGradient id="gradient1" cx="0" cy="0" r="1"
-                    gradientUnits="userSpaceOnUse" gradientTransform="rotate(45)">
-                    <stop stop-color="#3498db"></stop>
-                    <stop offset="1" stop-color="#2980b9" stop-opacity="0"></stop>
-                </radialGradient>
-            </defs>
-        </svg>
-        <div class="absolute inset-0 bg-gradient-radial from-transparent via-gray-900/30 to-gray-900/90"></div>
-      </div>
-    </div>
-  `
+  templateUrl: './base-layout.component.html'
 })
-export class BaseLayoutComponent {}
+export class BaseLayoutComponent {
+  isNavbarVisible = false;
+
+  toggleNavbar(): void {
+    this.isNavbarVisible = !this.isNavbarVisible;
+  }
+}

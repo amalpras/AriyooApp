@@ -31,7 +31,6 @@ export class ProfileComponent implements OnInit {
     questionsAsked: 0,
     questionsAnswered: 0
   };
-  
   isEditingUsername = false;
   editedUsername = '';
   userTags: UserTag[] = [];
@@ -60,7 +59,6 @@ export class ProfileComponent implements OnInit {
       this.user = {
         ...this.user,
         ...parsedUser,
-        // Mock data for demonstration
         seekerRating: 4.5,
         solverRating: 4.8,
         questionsAsked: 15,

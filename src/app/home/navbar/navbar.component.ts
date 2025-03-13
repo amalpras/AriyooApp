@@ -51,4 +51,8 @@ export class NavbarComponent implements OnInit {
   toggle() {
     this.toggleNavbar.emit();
   }
+
+  navigateTo(route: string): void {
+    this.router.navigate([route]);
+  }
 }

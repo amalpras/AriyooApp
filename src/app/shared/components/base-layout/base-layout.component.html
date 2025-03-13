@@ -1,29 +1,94 @@
-import { Component } from '@angular/core';
+<div class="min-h-screen bg-gray-900">
+    <div class="min-h-screen bg-gray-900">
+      <!-- Fixed Navbar -->
+      <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-800/80 backdrop-blur-lg border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+              <a routerLink="/" class="text-white text-xl font-bold">Ariyoo</a>
+            </div>
 
-@Component({
-  selector: 'app-base-layout',
-  template: `
-    <div class="relative isolate overflow-auto bg-gray-900 w-screen min-h-screen">
-      <ng-content></ng-content>
+            <!-- Navigation Links -->
+            <div class="hidden md:block">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <a routerLink="/home" 
+                   routerLinkActive="bg-gray-700"
+                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Home
+                </a>
+                <a routerLink="/chat" 
+                   routerLinkActive="bg-gray-700"
+                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Chat
+                </a>
+                <a routerLink="/profile" 
+                   routerLinkActive="bg-gray-700"
+                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Profile
+                </a>
+              </div>
+            </div>
 
-      <!-- Background effects -->
-      <div class="fixed inset-0 -z-10">
-        <svg viewBox="0 0 1024 1024" class="absolute left-0 top-0 -z-10 h-[100vh] w-[100vw] opacity-30"
-          aria-hidden="true">
-          <circle cx="512" cy="212" r="412" fill="url(#gradient1)" fill-opacity="0.4">
-            <animate attributeName="cy" values="212;612;212" dur="20s" repeatCount="indefinite" />
-          </circle>
-          <defs>
-            <radialGradient id="gradient1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
-              gradientTransform="rotate(45)">
-              <stop stop-color="#3498db"></stop>
-              <stop offset="1" stop-color="#2980b9" stop-opacity="0"></stop>
-            </radialGradient>
-          </defs>
-        </svg>
-        <div class="absolute inset-0 bg-gradient-radial from-transparent via-gray-900/30 to-gray-900/90"></div>
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+              <button 
+                type="button"
+                (click)="toggleNavbar()"
+                class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path *ngIf="!isNavbarVisible" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                  <path *ngIf="isNavbarVisible" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="md:hidden" [class.hidden]="!isNavbarVisible">
+          <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a routerLink="/home"
+               routerLinkActive="bg-gray-700"
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              Home
+            </a>
+            <a routerLink="/chat"
+               routerLinkActive="bg-gray-700" 
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              Chat
+            </a>
+            <a routerLink="/profile"
+               routerLinkActive="bg-gray-700"
+               class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              Profile
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content with padding for navbar -->
+      <div class="pt-16">
+        <ng-content></ng-content>
+
+        <!-- Background effects -->
+        <div class="fixed inset-0 -z-10">
+          <svg viewBox="0 0 1024 1024" class="absolute left-0 top-0 -z-10 h-[100vh] w-[100vw] opacity-30"
+            aria-hidden="true">
+            <circle cx="512" cy="212" r="412" fill="url(#gradient1)" fill-opacity="0.4">
+              <animate attributeName="cy" values="212;612;212" dur="20s" repeatCount="indefinite" />
+            </circle>
+            <defs>
+              <radialGradient id="gradient1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                gradientTransform="rotate(45)">
+                <stop stop-color="#3498db"></stop>
+                <stop offset="1" stop-color="#2980b9" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-radial from-transparent via-gray-900/30 to-gray-900/90"></div>
+        </div>
       </div>
     </div>
   `
-})
-export class BaseLayoutComponent { }
+s

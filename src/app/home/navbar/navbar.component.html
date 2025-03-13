@@ -1,3 +1,14 @@
+<nav class="bg-gray-800 p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <a class="text-white text-lg font-semibold" routerLink="/">Ariyoo</a>
+    <div class="flex space-x-4">
+      <a class="text-gray-300 hover:text-white" routerLink="/home">Home</a>
+      <a class="text-gray-300 hover:text-white" routerLink="/profile">Profile</a>
+      <a class="text-gray-300 hover:text-white" routerLink="/chat">Chat</a>
+      <a class="text-gray-300 hover:text-white" routerLink="/logout">Logout</a>
+    </div>
+  </div>
+</nav>
 <div class="fixed left-0 top-0 h-full w-64 bg-white/10 backdrop-blur-lg border-r border-white/10 transition-transform transform -translate-x-full"
      [class.translate-x-0]="isNavbarVisible">
   <!-- Header -->
