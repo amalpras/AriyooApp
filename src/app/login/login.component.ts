@@ -26,7 +26,7 @@ export class LoginComponent {
           console.log('Login successful', response);
           localStorage.setItem('loggedin_user',JSON.stringify(response)); 
 
-          this.router.navigate(['/']); // Navigate to /home route
+          this.router.navigate(['/home']); // Navigate to /home route
         },
         error => {
           console.error('Login failed', error);

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +24,7 @@ import { SharedModule } from "./shared/shared.module";
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
 import { UserService } from './services/user.service';
 import { TagsService } from './services/tags.service';
+import { RequestInterceptor } from './core/interceptors/request.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { TagsService } from './services/tags.service';
   providers: [
     HttpClientModule,
     UserService,
-    TagsService
+    TagsService,
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
