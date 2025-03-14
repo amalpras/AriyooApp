@@ -34,10 +34,17 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.userNames = JSON.parse(loggedInUser).fullName;
   }
 
-  ngOnInit(): void {
+  private isLoggedIn(): boolean {
     const loggedInUser = localStorage.getItem('loggedin_user');
     if (!loggedInUser) {
       this.router.navigate(['/login']);
+      return false;
+    }
+    return true;
+  }
+
+  ngOnInit(): void {
+    if (!this.isLoggedIn()) {
       return;
     }
 
@@ -67,12 +74,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   getAllSessions() {
-    const loggedInUser = localStorage.getItem('loggedin_user');
-    if (!loggedInUser) {
-      this.router.navigate(['/login']);
+    if (!this.isLoggedIn()) {
       return;
     }
-    const user = JSON.parse(loggedInUser);
+    const loggedInUser = localStorage.getItem('loggedin_user');
+    const user = JSON.parse(loggedInUser || '{}');
     if(this.userMode === 'seeker'){
         this.getAllSessionsSeeker(user.userId);
     } else {
@@ -87,6 +93,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Error fetching active sessions for seeker:', error);
+        // Display an error message to the user
+        alert('Failed to load sessions. Please try again later.');
       }
     );
   } 
