@@ -69,38 +69,32 @@ export class ProfileComponent implements OnInit {
 
     // Mock data for demonstration
     this.userTags = [
-      { tagId: 1, userId: this.user.id, tagName: 'travel' },
-      { tagId: 2, userId: this.user.id, tagName: 'food' },
-      { tagId: 3, userId: this.user.id, tagName: 'adventure' }
+      { tagId: 1, userId: this.user.id, tagName: 'travel', name: 'Travel' },
+      { tagId: 2, userId: this.user.id, tagName: 'food', name: 'Food' },
+      { tagId: 3, userId: this.user.id, tagName: 'adventure', name: 'Adventure' }
     ];
 
     this.userPlaces = [
-      { placeId: 1, userId: this.user.id, placeName: 'Kerala' },
-      { placeId: 2, userId: this.user.id, placeName: 'Goa' },
-      { placeId: 3, userId: this.user.id, placeName: 'Mumbai' }
+      { placeId: 1, userId: this.user.id, placeName: 'Kerala', name: 'Kerala' },
+      { placeId: 2, userId: this.user.id, placeName: 'Goa', name: 'Goa' },
+      { placeId: 3, userId: this.user.id, placeName: 'Mumbai', name: 'Mumbai' }
     ];
 
     this.userPlaceTags = [
-      { placeTagId: 1, userId: this.user.id, tagName: 'beaches' },
-      { placeTagId: 2, userId: this.user.id, tagName: 'mountains' },
-      { placeTagId: 3, userId: this.user.id, tagName: 'cities' }
+      { placeTagId: 1, userId: this.user.id, tagName: 'beaches', name: 'Beaches' },
+      { placeTagId: 2, userId: this.user.id, tagName: 'mountains', name: 'Mountains' },
+      { placeTagId: 3, userId: this.user.id, tagName: 'cities', name: 'Cities' }
     ];
   }
 
   toggleUsernameEdit(): void {
-    if (this.isEditingUsername) {
-      this.updateUsername();
-    }
     this.isEditingUsername = !this.isEditingUsername;
+    this.editedUsername = this.user.userName;
   }
 
-  updateUsername(): void {
+  saveUsername(): void {
     if (this.editedUsername.trim()) {
       this.user.userName = this.editedUsername.trim();
-      // Update localStorage for demo
-      const userData = JSON.parse(localStorage.getItem('loggedin_user') || '{}');
-      userData.userName = this.user.userName;
-      localStorage.setItem('loggedin_user', JSON.stringify(userData));
       this.isEditingUsername = false;
     }
   }

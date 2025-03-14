@@ -70,18 +70,21 @@ lastMessage: any;
 }
 
 export interface UserTag {
+[x: string]: any;
   tagId: number;
   userId: number;  // Added missing userId property
   tagName: string;
 }
 
 export interface UserPlace {
+name: any;
   placeId: number;
   userId: number;
   placeName: string;
 }
 
 export interface UserPlaceTag {
+[x: string]: any;
   placeTagId: number;
   userId: number;
   tagName: string;

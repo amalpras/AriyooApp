@@ -7,26 +7,23 @@ import { UserTag, UserPlace, UserPlaceTag } from '../models/tag.model';
 })
 export class TagsService {
   getUserTags(userId: number): Observable<UserTag[]> {
-    // Mock implementation
     return of([
-      { tagId: 1, userId: userId, tagName: 'travel' },
-      { tagId: 2, userId: userId, tagName: 'food' }
+      { tagId: 1, userId: userId, tagName: 'travel', name: 'Travel' },
+      { tagId: 2, userId: userId, tagName: 'food', name: 'Food' }
     ]);
   }
 
   getUserPlaces(userId: number): Observable<UserPlace[]> {
-    // Mock implementation
     return of([
-      { placeId: 1, userId: userId, placeName: 'Kerala' },
-      { placeId: 2, userId: userId, placeName: 'Goa' }
+      { placeId: 1, userId: userId, placeName: 'Kerala', name: 'Kerala' },
+      { placeId: 2, userId: userId, placeName: 'Goa', name: 'Goa' }
     ]);
   }
 
   getUserPlaceTags(userId: number): Observable<UserPlaceTag[]> {
-    // Mock implementation
     return of([
-      { placeTagId: 1, userId: userId, tagName: 'beaches' },
-      { placeTagId: 2, userId: userId, tagName: 'mountains' }
+      { placeTagId: 1, userId: userId, tagName: 'beaches', name: 'Beaches' },
+      { placeTagId: 2, userId: userId, tagName: 'mountains', name: 'Mountains' }
     ]);
   }
 
