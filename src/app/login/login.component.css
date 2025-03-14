@@ -2,8 +2,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh; /* Ensure it takes the full height of the viewport */
   width: 100%;
+  background-color: #1a202c; /* Set background color */
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+app-base-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .mat-form-field {
