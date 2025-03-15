@@ -55,72 +55,142 @@
               </div>
             </div>
 
-            <!-- Guru Mode Toggle -->
+            <!-- Replace the checkbox with this modern toggle -->
             <div class="mt-6">
-              <label class="flex items-center space-x-3">
-                <input type="checkbox" [(ngModel)]="user.isSolver" name="isSolver" class="form-checkbox h-5 w-5 text-blue-600">
-                <span class="text-gray-400">Enable Guru Mode</span>
+              <label class="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                <div>
+                  <span class="text-white font-medium">Guru Mode</span>
+                  <p class="text-sm text-gray-400">Enable this to start answering questions and helping others</p>
+                </div>
+                <div class="guru-toggle-wrapper">
+                  <button 
+                    (click)="toggleGuruMode()"
+                    class="guru-toggle"
+                    [attr.data-checked]="user.isSolver"
+                    aria-label="Toggle Guru Mode">
+                    <div class="guru-toggle-handle"></div>
+                    <div class="guru-toggle-icons">
+                      <svg *ngIf="!user.isSolver" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                      </svg>
+                      <svg *ngIf="user.isSolver" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
               </label>
-              <p class="mt-2 text-sm text-gray-400">Enable this to start answering questions and helping others</p>
             </div>
 
             <button type="submit" class="mt-6 bg-blue-600 text-white px-4 py-2 rounded-md">Update Profile</button>
           </form>
         </div>
 
-        <!-- Tags Section -->
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-white">Your Tags</h3>
-            <button (click)="openAddTagModal()" class="btn-primary">+ Add Tag</button>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <div *ngFor="let tag of userTags" class="pill">
-              <span>{{ tag['name'] }}</span>
-              <button (click)="deleteUserTag(tag)" class="pill-delete">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
+        <!-- Move the Tags, Places, and PlaceTags sections into a conditional block -->
+        <ng-container *ngIf="user.isSolver">
+          <div class="mt-8 space-y-6 guru-sections">
+            <!-- Existing Tags, Places, and PlaceTags sections with animation -->
+            <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 transform transition-all duration-300 hover:scale-102">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Your Tags</h3>
+                <button (click)="openAddTagModal()" class="btn-primary">+ Add Tag</button>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <div *ngFor="let tag of userTags" class="pill">
+                  <span>{{ tag['name'] }}</span>
+                  <button (click)="deleteUserTag(tag)" class="pill-delete">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Places Section -->
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-white">Your Places</h3>
-            <button (click)="openAddPlaceModal()" class="btn-primary">+ Add Place</button>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <div *ngFor="let place of userPlaces" class="pill">
-              <span>{{ place['name'] }}</span>
-              <button (click)="deleteUserPlace(place)" class="pill-delete">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
+            <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 transform transition-all duration-300 hover:scale-102">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Your Places</h3>
+                <button (click)="openAddPlaceModal()" class="btn-primary">+ Add Place</button>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <div *ngFor="let place of userPlaces" class="pill">
+                  <span>{{ place['name'] }}</span>
+                  <button (click)="deleteUserPlace(place)" class="pill-delete">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Place Tags Section -->
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-white">Your Place Tags</h3>
-            <button (click)="openAddPlaceTagModal()" class="btn-primary">+ Add Place Tag</button>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <div *ngFor="let placeTag of userPlaceTags" class="pill">
-              <span>{{ placeTag['name'] }}</span>
-              <button (click)="deleteUserPlaceTag(placeTag)" class="pill-delete">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
+            <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 transform transition-all duration-300 hover:scale-102">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Your Place Tags</h3>
+                <button (click)="openAddPlaceTagModal()" class="btn-primary">+ Add Place Tag</button>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <div *ngFor="let placeTag of userPlaceTags" class="pill">
+                  <span>{{ placeTag['name'] }}</span>
+                  <button (click)="deleteUserPlaceTag(placeTag)" class="pill-delete">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievements Section -->
+            <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
+              <h3 class="text-xl font-bold text-white mb-4">Achievements</h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="achievement-card p-4 bg-white/5 rounded-lg text-center">
+                  <div class="achievement-icon mb-2">🏆</div>
+                  <h4 class="text-white font-medium">Top Solver</h4>
+                  <p class="text-sm text-gray-400">Achieved 100+ solutions</p>
+                </div>
+                <!-- Add more achievements -->
+              </div>
+            </div>
+
+            <!-- Expertise Level -->
+            <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
+              <h3 class="text-xl font-bold text-white mb-4">Expertise Level</h3>
+              <div class="relative pt-1">
+                <div class="flex mb-2 items-center justify-between">
+                  <div>
+                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-300 bg-blue-600/20">
+                      Level 7
+                    </span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold inline-block text-blue-300">
+                      70%
+                    </span>
+                  </div>
+                </div>
+                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-white/5">
+                  <div style="width:70%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
+              <h3 class="text-xl font-bold text-white mb-4">Connected Accounts</h3>
+              <div class="space-y-4">
+                <a href="#" class="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                  <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                    <!-- Add social media icons -->
+                  </svg>
+                  <span class="ml-3 text-white">Connect with Twitter</span>
+                </a>
+                <!-- Add more social links -->
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
 
         <!-- Add Tag Modal -->
         <div *ngIf="showAddTagModal" class="modal-backdrop" (click)="closeAddTagModal()">

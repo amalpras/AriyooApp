@@ -350,6 +350,109 @@ input:checked + .guru-toggle-slider:before {
   transform: translateX(1.5rem);
 }
 
+/* Modern Guru Toggle */
+.guru-toggle-wrapper {
+  position: relative;
+  width: 56px;
+  height: 30px;
+}
+
+.guru-toggle {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 2px;
+  position: relative;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.guru-toggle[data-checked="true"] {
+  background: linear-gradient(45deg, #3b82f6, #6366f1);
+  border-color: transparent;
+}
+
+.guru-toggle-handle {
+  width: 26px;
+  height: 26px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.guru-toggle[data-checked="true"] .guru-toggle-handle {
+  transform: translateX(26px);
+  background: #ffffff;
+}
+
+.guru-toggle-icons {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6px;
+  color: white;
+}
+
+/* Animation for Guru sections */
+.guru-sections {
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modern card hover effects */
+.transform {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Modern stats cards */
+.stats-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Modern pill badges */
+.pill {
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease;
+}
+
+.pill:hover {
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.2));
+  transform: translateY(-2px);
+}
+
 /* Modal Styles */
 .modal-backdrop {
   position: fixed;
