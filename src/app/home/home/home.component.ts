@@ -6,6 +6,11 @@ import { MessagesService } from 'src/core/http/messages.service';
 import { SessionService } from 'src/app/services/session.service';
 import { interval } from 'rxjs';
 
+interface ExampleQuestion {
+  question: string;
+  tags: string[];
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -28,6 +33,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   userMode: string = 'seeker';
   intervalId: any;
 
+  exampleQuestions: ExampleQuestion[] = [
+    {
+      question: "What are the best places to visit in Kerala?",
+      tags: ["travel", "kerala"]
+    },
+    {
+      question: "Where can I find good traditional Kerala food?",
+      tags: ["food", "kerala"]
+    },
+    {
+      question: "What are the must-visit beaches in Goa?",
+      tags: ["travel", "goa", "beaches"]
+    },
+    {
+      question: "Recommend some street food places in Mumbai",
+      tags: ["food", "mumbai", "street-food"]
+    },
+    {
+      question: "Best time to visit Taj Mahal?",
+      tags: ["travel", "agra", "tourism"]
+    },
+    {
+      question: "Hidden gems for shopping in Delhi?",
+      tags: ["shopping", "delhi", "local"]
+    }
+  ];
+
+  currentExampleIndex: number = 0;
+  exampleRotationInterval: any;
+
   constructor(
     private tagsService: TagsService, 
     private router: Router, 
@@ -45,13 +80,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => {
       this.getAllSessions();
     }, 5000);
+
+    // Start rotating example questions
+    this.exampleRotationInterval = setInterval(() => {
+      this.rotateExampleQuestions();
+    }, 3000); // Rotate every 3 seconds
   }
 
   ngOnDestroy(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-   
+    if (this.exampleRotationInterval) {
+      clearInterval(this.exampleRotationInterval);
+    }
   }
 
   private getAllTags(): void {
@@ -199,4 +241,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isNavbarVisible = !this.isNavbarVisible;
   }
 
+  rotateExampleQuestions(): void {
+    this.currentExampleIndex = (this.currentExampleIndex + 1) % this.exampleQuestions.length;
+  }
+
+  useExampleQuestion(question: ExampleQuestion): void {
+    this.message = question.question;
+    this.selectedTags = question.tags.map(tag => ({
+      id: 0,
+      tagName: tag,
+      description: 'tag'
+    }));
+    
+    // Focus on the message input
+    setTimeout(() => {
+      this.messageInput.nativeElement.focus();
+    });
+  }
 }

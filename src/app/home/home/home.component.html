@@ -67,19 +67,17 @@
         <div class="mt-12">
           <h2 class="text-lg font-medium text-white mb-4">Example questions you can ask:</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
-              <p class="text-white">What are the best places to visit in Kerala?</p>
+            <div *ngFor="let question of exampleQuestions.slice(currentExampleIndex, currentExampleIndex + 2)"
+                 class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10 cursor-pointer hover:bg-white/20 transition-all duration-300"
+                 (click)="useExampleQuestion(question)">
+              <p class="text-white">{{ question.question }}</p>
               <div class="mt-2 flex gap-2">
-                <span class="text-sm text-blue-400">#travel</span>
-                <span class="text-sm text-blue-400">#kerala</span>
+                <span *ngFor="let tag of question.tags" 
+                      class="text-sm text-blue-400 bg-blue-500/10 px-2 py-1 rounded-full">
+                  #{{ tag }}
+                </span>
               </div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
-              <p class="text-white">Where can I find good traditional Kerala food?</p>
-              <div class="mt-2 flex gap-2">
-                <span class="text-sm text-blue-400">#food</span>
-                <span class="text-sm text-blue-400">#kerala</span>
-              </div>
+              <div class="mt-2 text-xs text-gray-400">Click to use this question</div>
             </div>
           </div>
         </div>
