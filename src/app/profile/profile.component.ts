@@ -39,6 +39,9 @@ export class ProfileComponent implements OnInit {
   showAddTagModal = false;
   showAddPlaceModal = false;
   showAddPlaceTagModal = false;
+  newTagName: string = '';
+  newPlaceName: string = '';
+  newPlaceTagName: string = '';
 
   constructor(
     private readonly router: Router,
@@ -46,7 +49,7 @@ export class ProfileComponent implements OnInit {
     private readonly tagsService: TagsService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const userData = localStorage.getItem('loggedin_user');
     if (!userData) {
       this.router.navigate(['/login']);
@@ -109,25 +112,91 @@ export class ProfileComponent implements OnInit {
 
   openAddTagModal(): void {
     this.showAddTagModal = true;
+    this.newTagName = '';
+  }
+
+  closeAddTagModal(): void {
+    this.showAddTagModal = false;
   }
 
   openAddPlaceModal(): void {
     this.showAddPlaceModal = true;
+    this.newPlaceName = '';
+  }
+
+  closeAddPlaceModal(): void {
+    this.showAddPlaceModal = false;
   }
 
   openAddPlaceTagModal(): void {
     this.showAddPlaceTagModal = true;
+    this.newPlaceTagName = '';
+  }
+
+  closeAddPlaceTagModal(): void {
+    this.showAddPlaceTagModal = false;
+  }
+
+  addNewTag(): void {
+    if (this.newTagName.trim()) {
+      this.tagsService.addUserTag(this.user.id, this.newTagName).subscribe({
+        next: (tag) => {
+          this.userTags.push(tag);
+          this.closeAddTagModal();
+        },
+        error: (error) => console.error('Error adding tag:', error)
+      });
+    }
+  }
+
+  addNewPlace(): void {
+    if (this.newPlaceName.trim()) {
+      this.tagsService.addUserPlace(this.user.id, this.newPlaceName).subscribe({
+        next: (place) => {
+          this.userPlaces.push(place);
+          this.closeAddPlaceModal();
+        },
+        error: (error) => console.error('Error adding place:', error)
+      });
+    }
+  }
+
+  addNewPlaceTag(): void {
+    if (this.newPlaceTagName.trim()) {
+      this.tagsService.addUserPlaceTag(this.user.id, this.newPlaceTagName).subscribe({
+        next: (placeTag) => {
+          this.userPlaceTags.push(placeTag);
+          this.closeAddPlaceTagModal();
+        },
+        error: (error) => console.error('Error adding place tag:', error)
+      });
+    }
   }
 
   deleteUserTag(tag: UserTag): void {
-    this.userTags = this.userTags.filter(t => t.tagId !== tag.tagId);
+    this.tagsService.deleteUserTag(this.user.id, tag.tagId).subscribe({
+      next: () => {
+        this.userTags = this.userTags.filter(t => t.tagId !== tag.tagId);
+      },
+      error: (error) => console.error('Error deleting tag:', error)
+    });
   }
 
   deleteUserPlace(place: UserPlace): void {
-    this.userPlaces = this.userPlaces.filter(p => p.placeId !== place.placeId);
+    this.tagsService.deleteUserPlace(this.user.id, place.placeId).subscribe({
+      next: () => {
+        this.userPlaces = this.userPlaces.filter(p => p.placeId !== place.placeId);
+      },
+      error: (error) => console.error('Error deleting place:', error)
+    });
   }
 
   deleteUserPlaceTag(placeTag: UserPlaceTag): void {
-    this.userPlaceTags = this.userPlaceTags.filter(pt => pt.placeTagId !== placeTag.placeTagId);
+    this.tagsService.deleteUserPlaceTag(this.user.id, placeTag.placeTagId).subscribe({
+      next: () => {
+        this.userPlaceTags = this.userPlaceTags.filter(pt => pt.placeTagId !== placeTag.placeTagId);
+      },
+      error: (error) => console.error('Error deleting place tag:', error)
+    });
   }
 }

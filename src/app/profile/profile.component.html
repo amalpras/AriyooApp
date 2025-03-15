@@ -1,73 +1,161 @@
 <app-base-layout>
   <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto">
-      <!-- Profile Header -->
-      <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg mb-6 p-6 ring-1 ring-white/10">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-2xl font-bold text-white">{{ user.userName }}</h2>
-            <p class="text-gray-400">{{ user.email }}</p>
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Profile Sidebar -->
+      <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
+        <div class="flex flex-col items-center">
+          <div class="h-24 w-24 rounded-full bg-blue-500/20 flex items-center justify-center mb-4">
+            <span class="text-2xl font-bold text-blue-300">{{ user.userName.charAt(0) }}</span>
           </div>
-          <button (click)="toggleUsernameEdit()" class="text-blue-400 hover:text-blue-300">
-            Edit Username
-          </button>
-        </div>
-        <div *ngIf="isEditingUsername" class="mt-4">
-          <input [(ngModel)]="editedUsername" class="w-full p-2 rounded-md bg-white/5 text-white" placeholder="New Username">
-          <button (click)="saveUsername()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">Save</button>
+          <h2 class="text-2xl font-bold text-white">{{ user.userName }}</h2>
+          <p class="text-gray-400">{{ user.email }}</p>
+          <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md">Upload New Photo</button>
+          <p class="mt-2 text-sm text-gray-400">Upload a new avatar. Larger image will be resized automatically. Maximum upload size is 1 MB</p>
+          <p class="mt-4 text-sm text-gray-400">Member Since: 29 September 2019</p>
+
+          <!-- Stats Section -->
+          <div class="w-full mt-6 space-y-4">
+            <div class="p-4 bg-white/5 rounded-lg">
+              <h4 class="text-lg font-semibold text-white">Seeker Stats</h4>
+              <p class="text-gray-400">Rating: {{ user.seekerRating }}/5</p>
+              <p class="text-gray-400">Questions Asked: {{ user.questionsAsked }}</p>
+            </div>
+            <div *ngIf="user.isSolver" class="p-4 bg-white/5 rounded-lg">
+              <h4 class="text-lg font-semibold text-white">Guru Stats</h4>
+              <p class="text-gray-400">Rating: {{ user.solverRating }}/5</p>
+              <p class="text-gray-400">Questions Answered: {{ user.questionsAnswered }}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <!-- Seeker Stats -->
+      <!-- Main Content Area -->
+      <div class="md:col-span-2 space-y-6">
+        <!-- Profile Form -->
         <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <h3 class="text-xl font-semibold text-white">Seeker Stats</h3>
-          <p class="text-gray-400">Questions Asked: {{ user.questionsAsked }}</p>
-          <p class="text-gray-400">Seeker Rating: {{ user.seekerRating }}</p>
+          <h3 class="text-2xl font-bold text-white mb-4">Edit Profile</h3>
+          <form>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Existing form fields -->
+              <div>
+                <label class="block text-sm font-medium text-gray-400">Full Name</label>
+                <input type="text" [(ngModel)]="user.userName" name="fullName" class="mt-1 block w-full rounded-md bg-white/5 text-white p-2.5">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400">Username</label>
+                <input type="text" [(ngModel)]="user.userName" name="userName" class="mt-1 block w-full rounded-md bg-white/5 text-white p-2.5">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400">Email Address</label>
+                <input type="email" [(ngModel)]="user.email" name="email" class="mt-1 block w-full rounded-md bg-white/5 text-white p-2.5">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400">Password</label>
+                <input type="password" class="mt-1 block w-full rounded-md bg-white/5 text-white p-2.5">
+              </div>
+            </div>
+
+            <!-- Guru Mode Toggle -->
+            <div class="mt-6">
+              <label class="flex items-center space-x-3">
+                <input type="checkbox" [(ngModel)]="user.isSolver" name="isSolver" class="form-checkbox h-5 w-5 text-blue-600">
+                <span class="text-gray-400">Enable Guru Mode</span>
+              </label>
+              <p class="mt-2 text-sm text-gray-400">Enable this to start answering questions and helping others</p>
+            </div>
+
+            <button type="submit" class="mt-6 bg-blue-600 text-white px-4 py-2 rounded-md">Update Profile</button>
+          </form>
         </div>
 
-        <!-- Guru Mode Toggle -->
+        <!-- Tags Section -->
         <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <h3 class="text-xl font-semibold text-white">Guru Mode</h3>
-          <label class="flex items-center mt-2">
-            <input type="checkbox" [(ngModel)]="user.isSolver" (change)="toggleGuruMode()" class="form-checkbox h-5 w-5 text-blue-600">
-            <span class="ml-2 text-gray-400">Enable Guru Mode</span>
-          </label>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-white">Your Tags</h3>
+            <button (click)="openAddTagModal()" class="btn-primary">+ Add Tag</button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div *ngFor="let tag of userTags" class="pill">
+              <span>{{ tag['name'] }}</span>
+              <button (click)="deleteUserTag(tag)" class="pill-delete">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Guru Stats (when enabled) -->
-      <div *ngIf="user.isSolver" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <h3 class="text-xl font-semibold text-white">Guru Stats</h3>
-          <p class="text-gray-400">Questions Answered: {{ user.questionsAnswered }}</p>
-          <p class="text-gray-400">Solver Rating: {{ user.solverRating }}</p>
+        <!-- Places Section -->
+        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-white">Your Places</h3>
+            <button (click)="openAddPlaceModal()" class="btn-primary">+ Add Place</button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div *ngFor="let place of userPlaces" class="pill">
+              <span>{{ place['name'] }}</span>
+              <button (click)="deleteUserPlace(place)" class="pill-delete">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Expertise Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <h3 class="text-xl font-semibold text-white">Tags</h3>
-          <ul class="text-gray-400">
-            <li *ngFor="let tag of userTags">{{ tag['name'] }}</li>
-          </ul>
-          <button (click)="showAddTagModal = true" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">Add Tag</button>
+        <!-- Place Tags Section -->
+        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10 mt-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-white">Your Place Tags</h3>
+            <button (click)="openAddPlaceTagModal()" class="btn-primary">+ Add Place Tag</button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div *ngFor="let placeTag of userPlaceTags" class="pill">
+              <span>{{ placeTag['name'] }}</span>
+              <button (click)="deleteUserPlaceTag(placeTag)" class="pill-delete">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <h3 class="text-xl font-semibold text-white">Places</h3>
-          <ul class="text-gray-400">
-            <li *ngFor="let place of userPlaces">{{ place['name'] }}</li>
-          </ul>
-          <button (click)="showAddPlaceModal = true" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">Add Place</button>
+
+        <!-- Add Tag Modal -->
+        <div *ngIf="showAddTagModal" class="modal-backdrop" (click)="closeAddTagModal()">
+          <div class="modal-content" (click)="$event.stopPropagation()">
+            <h3 class="text-xl font-bold text-white mb-4">Add New Tag</h3>
+            <input [(ngModel)]="newTagName" class="form-input w-full mb-4" placeholder="Enter tag name">
+            <div class="flex justify-end gap-2">
+              <button (click)="closeAddTagModal()" class="btn-secondary">Cancel</button>
+              <button (click)="addNewTag()" class="btn-primary">Add Tag</button>
+            </div>
+          </div>
         </div>
-        <div class="bg-white/10 backdrop-blur-lg shadow-xl rounded-lg p-6 ring-1 ring-white/10">
-          <h3 class="text-xl font-semibold text-white">Place Tags</h3>
-          <ul class="text-gray-400">
-            <li *ngFor="let placeTag of userPlaceTags">{{ placeTag['name'] }}</li>
-          </ul>
-          <button (click)="showAddPlaceTagModal = true" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">Add Place Tag</button>
+
+        <!-- Add Place Modal -->
+        <div *ngIf="showAddPlaceModal" class="modal-backdrop" (click)="closeAddPlaceModal()">
+          <div class="modal-content" (click)="$event.stopPropagation()">
+            <h3 class="text-xl font-bold text-white mb-4">Add New Place</h3>
+            <input [(ngModel)]="newPlaceName" class="form-input w-full mb-4" placeholder="Enter place name">
+            <div class="flex justify-end gap-2">
+              <button (click)="closeAddPlaceModal()" class="btn-secondary">Cancel</button>
+              <button (click)="addNewPlace()" class="btn-primary">Add Place</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Place Tag Modal -->
+        <div *ngIf="showAddPlaceTagModal" class="modal-backdrop" (click)="closeAddPlaceTagModal()">
+          <div class="modal-content" (click)="$event.stopPropagation()">
+            <h3 class="text-xl font-bold text-white mb-4">Add New Place Tag</h3>
+            <input [(ngModel)]="newPlaceTagName" class="form-input w-full mb-4" placeholder="Enter place tag name">
+            <div class="flex justify-end gap-2">
+              <button (click)="closeAddPlaceTagModal()" class="btn-secondary">Cancel</button>
+              <button (click)="addNewPlaceTag()" class="btn-primary">Add Place Tag</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
