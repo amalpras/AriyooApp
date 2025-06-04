@@ -17,6 +17,7 @@ export class ChatwindowComponent implements OnInit, OnDestroy, OnChanges, AfterV
   selectedTags: Tag[] = [];
   messages: any[] = [];
   private intervalId: any;
+  selectedFile: File | null = null;
 
   constructor(
     private tagsService: TagsService,
@@ -58,6 +59,42 @@ export class ChatwindowComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  uploadImage(): void {
+    if (!this.selectedFile) {
+      return;
+    }
+
+    const loggedInUser = localStorage.getItem('loggedin_user');
+    if (!loggedInUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    const userId = JSON.parse(loggedInUser).userId;
+    const sessionId = this.sessionId;
+
+    const formData = new FormData();
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+    formData.append('senderId', userId);
+    formData.append('sessionId', sessionId.toString());
+
+    this.messagesService.uploadImage(formData).subscribe(
+      () => {
+        this.selectedFile = null;
+        this.getMessages(this.sessionId.toString());
+      },
+      error => {
+        console.error('Error uploading image:', error);
+      }
+    );
+  }
+
   getTags() {
     this.tagsService.getTags().subscribe(
       (data: Tag[]) => {
@@ -83,6 +120,11 @@ export class ChatwindowComponent implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   sendMessage() {
+    if (this.selectedFile) {
+      this.uploadImage();
+      return;
+    }
+
     const loggedInUser = localStorage.getItem('loggedin_user');
     if (!loggedInUser) {
       this.router.navigate(['/login']);

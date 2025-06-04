@@ -44,4 +44,8 @@ export class MessagesService {
   sendSessionMessage(data: sendSessionMessage): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/Message/postMessage`, data);
   }
+
+  uploadImage(formData: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Message/uploadImage`, formData);
+  }
 }
