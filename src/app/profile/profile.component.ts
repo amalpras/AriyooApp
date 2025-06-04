@@ -97,8 +97,36 @@ export class ProfileComponent implements OnInit {
 
   saveUsername(): void {
     if (this.editedUsername.trim()) {
-      this.user.userName = this.editedUsername.trim();
-      this.isEditingUsername = false;
+      // Ensure this.user.id is available
+      if (!this.user.id) {
+        const userData = localStorage.getItem('loggedin_user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          this.user.id = parsedUser.id;
+        }
+      }
+
+      if (!this.user.id) {
+        console.error('User ID is not available. Cannot update username.');
+        // Optionally, provide user feedback (e.g., alert)
+        alert('Error: User ID missing. Cannot save username.');
+        return;
+      }
+
+      this.userService.updateUsername(this.user.id, this.editedUsername.trim()).subscribe({
+        next: () => {
+          this.user.userName = this.editedUsername.trim();
+          this.isEditingUsername = false;
+          console.log('Username updated successfully!');
+          // Optionally, provide user feedback (e.g., a simple alert)
+          alert('Username updated successfully!');
+        },
+        error: (error) => {
+          console.error('Error updating username:', error);
+          // Optionally, provide user feedback
+          alert('Error updating username. Please try again.');
+        }
+      });
     }
   }
 

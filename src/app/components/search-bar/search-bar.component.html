@@ -1,0 +1,29 @@
+<div class="search-bar-container">
+  <input
+    type="text"
+    placeholder="Search for users..."
+    [(ngModel)]="searchTerm"
+    (keyup)="onSearchTermChange()"
+    class="search-input"
+  >
+  <button (click)="performSearch()" class="search-button">Search</button>
+</div>
+
+<div class="search-results mt-4">
+  <div *ngIf="searchAttempted && searchResults.length === 0 && searchTerm.trim().length > 0" class="no-results-message p-2 text-gray-500">
+    <p>No users found matching "{{ searchTerm }}".</p>
+  </div>
+
+  <div *ngIf="searchAttempted && searchResults.length === 0 && searchTerm.trim().length === 0" class="no-results-message p-2 text-gray-500">
+    <p>Please enter a search term to find users.</p>
+  </div>
+
+  <ul *ngIf="searchResults.length > 0" class="results-list list-none p-0 m-0">
+    <li *ngFor="let user of searchResults" class="result-item p-2 border-b border-gray-200">
+      <span class="font-semibold">{{ user.userName }}</span> ({{ user.email }})
+      <!-- Optional: Add a button or link to view user's profile, e.g.,
+           <a [routerLink]="['/profile', user.id]" class="ml-2 text-blue-500 hover:underline">View Profile</a>
+      -->
+    </li>
+  </ul>
+</div>
