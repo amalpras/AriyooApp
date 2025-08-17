@@ -6,6 +6,7 @@
       <div class="flex items-center space-x-2">
         <span class="w-2 h-2 rounded-full bg-green-500"></span>
         <span class="text-sm text-gray-600">Active</span>
+        <button class="ml-4 px-3 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700" (click)="openPublishModal = true">Publish</button>
       </div>
     </div>
   </div>
@@ -53,6 +54,20 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
         </svg>
       </button>
+    </div>
+  </div>
+
+  <!-- Publish Modal -->
+  <div *ngIf="openPublishModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
+      <h3 class="text-lg font-semibold mb-2">Publish conversation as a post</h3>
+      <p class="text-sm text-gray-600 mb-4">You can share this conversation publicly. Edit the title and summary before publishing.</p>
+      <input [(ngModel)]="publishTitle" placeholder="Post title" class="w-full mb-2 px-3 py-2 border rounded-md" />
+      <textarea [(ngModel)]="publishSummary" placeholder="Post summary" rows="4" class="w-full mb-4 px-3 py-2 border rounded-md"></textarea>
+      <div class="flex justify-end gap-2">
+        <button class="px-3 py-2 rounded-md border" (click)="openPublishModal=false">Cancel</button>
+        <button class="px-3 py-2 rounded-md bg-blue-600 text-white" (click)="publishConversation()">Publish</button>
+      </div>
     </div>
   </div>
 </div>

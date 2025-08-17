@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatOptionModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChatwindowComponent } from './chatwindow/chatwindow.component';
 import { RegisterComponent } from './register/register.component';
 import { ChatComponent } from './chat/chat.component';
@@ -23,6 +24,7 @@ import { NewsletterComponent } from './newsletter/newsletter.component';
 import { SharedModule } from "./shared/shared.module";
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
 import { RequestInterceptor } from './core/interceptors/request.service';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { RequestInterceptor } from './core/interceptors/request.service';
     ProfileComponent,
     NewsletterComponent,
     ForgotPasswordComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { RequestInterceptor } from './core/interceptors/request.service';
     FormsModule,
     MatOptionModule,
     MatChipsModule,
+    MatSnackBarModule,
     SharedModule
   ],
   providers: [

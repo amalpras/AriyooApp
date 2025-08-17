@@ -7,8 +7,15 @@ import { Router } from '@angular/router';
 })
 export class BaseLayoutComponent {
   isNavbarVisible = false;
+  isDark = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') {
+      this.isDark = true;
+      document.documentElement.classList.add('dark');
+    }
+  }
 
   toggleNavbar(): void {
     this.isNavbarVisible = !this.isNavbarVisible;
@@ -21,5 +28,16 @@ export class BaseLayoutComponent {
   navigateTo(route: string): void {
     this.router.navigate([route]);
     this.closeNavbar();
+  }
+
+  toggleTheme(): void {
+    this.isDark = !this.isDark;
+    if (this.isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 }

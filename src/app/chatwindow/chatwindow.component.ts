@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MessagesService } from 'src/core/http/messages.service';
 import { TagsService } from 'src/core/http/tags.service';
 import { Tag, AskQuery, sendSessionMessage } from '../models/tag.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-chatwindow',
@@ -18,11 +19,15 @@ export class ChatwindowComponent implements OnInit, OnDestroy, OnChanges, AfterV
   messages: any[] = [];
   private intervalId: any;
   selectedFile: File | null = null;
+  openPublishModal = false;
+  publishTitle = '';
+  publishSummary = '';
 
   constructor(
     private tagsService: TagsService,
     private messagesService: MessagesService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -165,6 +170,12 @@ export class ChatwindowComponent implements OnInit, OnDestroy, OnChanges, AfterV
   formatMessageTime(createdAt: string): string {
     const date = new Date(createdAt);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  publishConversation() {
+    this.openPublishModal = false;
+    this.snackBar.open('Conversation published to Posts', 'View', { duration: 3000 })
+      .onAction().subscribe(() => this.router.navigate(['/posts']));
   }
 
   private scrollToBottom(): void {
