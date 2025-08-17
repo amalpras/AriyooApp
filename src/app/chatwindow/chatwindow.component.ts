@@ -155,11 +155,11 @@ export class ChatwindowComponent implements OnInit, OnDestroy, OnChanges, AfterV
     }
   }
 
-  isCurrentUser(senderId: string): boolean {
+  isCurrentUser(senderId: any): boolean {
     const loggedInUser = localStorage.getItem('loggedin_user');
     if (!loggedInUser) return false;
     const user = JSON.parse(loggedInUser);
-    return user.userId === senderId;
+    return Number(user.userId) === Number(senderId);
   }
 
   formatMessageTime(createdAt: string): string {
