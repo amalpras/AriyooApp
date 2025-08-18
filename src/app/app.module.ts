@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,8 +13,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatOption, MatOptionModule } from '@angular/material/core';
+import { MatOptionModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChatwindowComponent } from './chatwindow/chatwindow.component';
 import { RegisterComponent } from './register/register.component';
 import { ChatComponent } from './chat/chat.component';
@@ -22,9 +23,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { SharedModule } from "./shared/shared.module";
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
-import { UserService } from './services/user.service';
-import { TagsService } from './services/tags.service';
 import { RequestInterceptor } from './core/interceptors/request.service';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +36,7 @@ import { RequestInterceptor } from './core/interceptors/request.service';
     ProfileComponent,
     NewsletterComponent,
     ForgotPasswordComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,18 +47,15 @@ import { RequestInterceptor } from './core/interceptors/request.service';
     MatCardModule,
     MatButtonModule,
     ReactiveFormsModule,
-    HttpClientModule, // Add HttpClientModule here
+    HttpClientModule,
     MatTabsModule,
     FormsModule,
-    ReactiveFormsModule,
     MatOptionModule,
     MatChipsModule,
+    MatSnackBarModule,
     SharedModule
   ],
   providers: [
-    HttpClientModule,
-    UserService,
-    TagsService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

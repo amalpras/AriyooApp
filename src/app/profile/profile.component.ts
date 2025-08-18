@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { TagsService } from '../services/tags.service';
+import { UserService } from 'src/core/http/user.service';
+import { TagsService } from 'src/core/http/tags.service';
 import { UserTag, UserPlace, UserPlaceTag } from '../models/tag.model';
 
 interface User {
@@ -104,7 +104,6 @@ export class ProfileComponent implements OnInit {
 
   toggleGuruMode(): void {
     this.user.isSolver = !this.user.isSolver;
-    // Update localStorage for demo
     const userData = JSON.parse(localStorage.getItem('loggedin_user') || '{}');
     userData.isSolver = this.user.isSolver;
     localStorage.setItem('loggedin_user', JSON.stringify(userData));
@@ -139,9 +138,9 @@ export class ProfileComponent implements OnInit {
 
   addNewTag(): void {
     if (this.newTagName.trim()) {
-      this.tagsService.addUserTag(this.user.id, this.newTagName).subscribe({
-        next: (tag) => {
-          this.userTags.push(tag);
+      this.tagsService.addUserTags([{ tagId: 0, userId: this.user.id, tagName: this.newTagName }]).subscribe({
+        next: () => {
+          this.userTags.push({ tagId: Date.now(), userId: this.user.id, tagName: this.newTagName, name: this.newTagName });
           this.closeAddTagModal();
         },
         error: (error) => console.error('Error adding tag:', error)
@@ -151,7 +150,7 @@ export class ProfileComponent implements OnInit {
 
   addNewPlace(): void {
     if (this.newPlaceName.trim()) {
-      this.tagsService.addUserPlace(this.user.id, this.newPlaceName).subscribe({
+      this.tagsService.addUserPlace({ placeId: 0, userId: this.user.id, placeName: this.newPlaceName, name: this.newPlaceName }).subscribe({
         next: (place) => {
           this.userPlaces.push(place);
           this.closeAddPlaceModal();
@@ -163,7 +162,7 @@ export class ProfileComponent implements OnInit {
 
   addNewPlaceTag(): void {
     if (this.newPlaceTagName.trim()) {
-      this.tagsService.addUserPlaceTag(this.user.id, this.newPlaceTagName).subscribe({
+      this.tagsService.addUserPlaceTag({ placeTagId: 0, userId: this.user.id, tagName: this.newPlaceTagName, name: this.newPlaceTagName }).subscribe({
         next: (placeTag) => {
           this.userPlaceTags.push(placeTag);
           this.closeAddPlaceTagModal();
@@ -183,7 +182,7 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteUserPlace(place: UserPlace): void {
-    this.tagsService.deleteUserPlace(this.user.id, place.placeId).subscribe({
+    this.tagsService.deleteUserPlace(place.placeId).subscribe({
       next: () => {
         this.userPlaces = this.userPlaces.filter(p => p.placeId !== place.placeId);
       },
@@ -192,7 +191,7 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteUserPlaceTag(placeTag: UserPlaceTag): void {
-    this.tagsService.deleteUserPlaceTag(this.user.id, placeTag.placeTagId).subscribe({
+    this.tagsService.deleteUserPlaceTag(placeTag.placeTagId).subscribe({
       next: () => {
         this.userPlaceTags = this.userPlaceTags.filter(pt => pt.placeTagId !== placeTag.placeTagId);
       },

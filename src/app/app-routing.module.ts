@@ -7,6 +7,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { 
@@ -36,13 +37,21 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'posts',
+    loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule)
+  },
   { 
     path: 'forgot-password', 
     component: ForgotPasswordComponent 
   },
+  {
+    path: '404',
+    component: NotFoundComponent
+  },
   { 
     path: '**', 
-    redirectTo: '' 
+    redirectTo: '404' 
   }
 ];
 

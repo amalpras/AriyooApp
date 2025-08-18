@@ -8,9 +8,6 @@ import { RegisterUser } from 'src/app/models/tag.model';
   providedIn: 'root'
 })
 export class AuthService {
-  isAuthenticated() {
-    throw new Error('Method not implemented.');
-  }
   private baseUrl = environment.api;
 
   constructor(private http: HttpClient) {}

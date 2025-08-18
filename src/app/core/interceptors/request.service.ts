@@ -23,8 +23,7 @@ export class RequestInterceptor implements HttpInterceptor {
       if (token) {
         modifiedReq = req.clone({
           setHeaders: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${token}`
           }
         });
       }
@@ -33,9 +32,7 @@ export class RequestInterceptor implements HttpInterceptor {
     return next.handle(modifiedReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Clear local storage
           localStorage.removeItem('loggedin_user');
-          // Redirect to login
           this.router.navigate(['/login']);
         }
         return throwError(() => error);
